@@ -1,3 +1,6 @@
+import { RentalResponseModel } from './../../models/responses/rentalResponseModel';
+import { HttpClient } from '@angular/common/http';
+import { Rental } from './../../models/rental';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RentalComponent implements OnInit {
 
-  constructor() { }
+  rentals : Rental[] = []
+  apiUrl = "https://localhost:44388/api/rentals/getall"
+  constructor(private httpClient:HttpClient) { }
 
   ngOnInit(): void {
+    this.getRentalList();
+  }
+
+  getRentalList(){
+    this.httpClient
+    .get<RentalResponseModel>(this.apiUrl)
+    .subscribe((response)=>{
+      this.rentals=response.data
+    })
   }
 
 }
