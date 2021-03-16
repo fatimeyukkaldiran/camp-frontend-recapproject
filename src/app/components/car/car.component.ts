@@ -1,7 +1,6 @@
-import { CarResponseModel } from './../../models/responses/carResponseModel';
+import { CarService } from './../../services/car.service';
 import { Car } from './../../models/car';
 import { Component, OnInit } from '@angular/core';
-import {HttpClient} from '@angular/common/http'
 
 //HttpClient --> to connect API on backend
 @Component({
@@ -13,20 +12,16 @@ export class CarComponent implements OnInit {
 
 
   cars:Car[] = []
-  apiUrl = "https://localhost:44388/api/cars/getall"
-  constructor(private httpClient:HttpClient) { }
+  dataLoaded = false;
+  constructor(private carService:CarService) { }
 
   ngOnInit(): void {
     this.getCarsList()
   }
     getCarsList(){
-      this.httpClient
-      .get<CarResponseModel>(this.apiUrl)
-      .subscribe((response)=>{
-        this.cars = response.data
-      })
+    this.carService.getCarsList().subscribe(response=>{
+      this.cars = response.data
+      this.dataLoaded = true
+    })
     }
-  
-
-
 }

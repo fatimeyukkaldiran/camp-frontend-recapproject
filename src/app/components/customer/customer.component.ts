@@ -1,5 +1,4 @@
-import { CustomerResponseModel } from './../../models/responses/customerResponseModel';
-import { HttpClient } from '@angular/common/http';
+import { CustomerService } from './../../services/customer.service';
 import { Component, OnInit } from '@angular/core';
 import { Customer } from 'src/app/models/customer';
 
@@ -11,16 +10,13 @@ import { Customer } from 'src/app/models/customer';
 export class CustomerComponent implements OnInit {
 
   customers : Customer[] = []
-  apiUrl="https://localhost:44388/api/customers/getall"
-  constructor(private httpClient:HttpClient) { }
+  constructor(private customerService:CustomerService) { }
 
   ngOnInit(): void {
     this.getCustomersList();
   }
   getCustomersList(){
-    this.httpClient
-    .get<CustomerResponseModel>(this.apiUrl)
-    .subscribe((response)=>{
+    this.customerService.getCustomersList().subscribe(response=>{
       this.customers=response.data
     })
   }
